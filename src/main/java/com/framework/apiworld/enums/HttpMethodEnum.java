@@ -1,4 +1,4 @@
-package com.framework.apiworld.dtos;
+package com.framework.apiworld.enums;
 
 public enum HttpMethodEnum {
     POST,

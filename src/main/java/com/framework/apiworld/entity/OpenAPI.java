@@ -7,6 +7,7 @@ import com.framework.apiworld.entity.security.SecurityScheme;
 import com.framework.apiworld.entity.servers.Server;
 import com.framework.apiworld.entity.tags.Tag;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 
@@ -18,7 +19,7 @@ import java.util.*;
  * "
  */
 
-//@Document(collection = "apicollection")
+@Document(collection = "apicollection")
 public class OpenAPI {
 
 

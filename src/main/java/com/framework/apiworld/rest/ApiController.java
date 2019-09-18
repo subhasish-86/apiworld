@@ -1,5 +1,7 @@
-package com.framework.apiworld;
+package com.framework.apiworld.rest;
 
+import com.framework.apiworld.service.ApiService;
+import com.framework.apiworld.beans.CreateApiRequest;
 import com.framework.apiworld.dtos.OpenApiDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -26,8 +28,8 @@ public class ApiController {
     }
 
     @PostMapping
-    public ResponseEntity<OpenApiDTO> createApi(@Valid @RequestBody CreatApiRequest creatApiRequest, UriComponentsBuilder ucBuilder){
-        return ResponseEntity.ok(apiService.createApi(creatApiRequest));
+    public ResponseEntity<OpenApiDTO> createApi(@Valid @RequestBody CreateApiRequest createApiRequest, UriComponentsBuilder ucBuilder){
+        return ResponseEntity.ok(apiService.createApi(createApiRequest));
     }
 
 //    @GetMapping(value="/", headers="Accept=application/json")

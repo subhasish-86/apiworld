@@ -1,5 +1,6 @@
-package com.framework.apiworld;
+package com.framework.apiworld.rest;
 
+import com.framework.apiworld.service.UserService;
 import com.framework.apiworld.beans.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;

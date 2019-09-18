@@ -1,4 +1,4 @@
-package com.framework.apiworld;
+package com.framework.apiworld.mongo;
 
 import com.framework.apiworld.entity.OpenAPI;
 import org.springframework.beans.factory.annotation.Autowired;

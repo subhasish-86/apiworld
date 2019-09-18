@@ -26,17 +26,18 @@ public class MediaTypeDTO {
             if (mediaType.getSchema().getProperties() != null) {
                 for (String typeName :
                         (Set<String>) mediaType.getSchema().getProperties().keySet()) {
-                    mediaTypeDTO.requestBody.add(ComplexTypeDTO.convert(typeName, (Schema) (mediaType.getSchema().getProperties().get(typeName))));
+                    mediaTypeDTO.requestBody.add(
+                            ComplexTypeDTO.convert(typeName, (Schema) (mediaType.getSchema().getProperties().get(typeName))));
                 }
             }
-            else
-            {
-                if(mediaType.getSchema().get$ref()!=null)
-                {
-                    mediaTypeDTO.externalType  mediaType.getSchema().get$ref();
-                }
-
-            }
+//            else
+//            {
+//                if(mediaType.getSchema().get$ref()!=null)
+//                {
+//                    mediaTypeDTO.requestBody.add(mediaType.getSchema().get$ref());
+//                }
+//
+//            }
 
 
         }

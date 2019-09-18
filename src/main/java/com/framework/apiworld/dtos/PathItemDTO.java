@@ -2,6 +2,7 @@ package com.framework.apiworld.dtos;
 
 import com.framework.apiworld.entity.PathItem;
 import com.framework.apiworld.entity.parameters.Parameter;
+import com.framework.apiworld.enums.HttpMethodEnum;
 
 import java.util.ArrayList;
 import java.util.List;

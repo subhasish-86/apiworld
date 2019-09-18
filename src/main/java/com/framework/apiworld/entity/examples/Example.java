@@ -1,5 +1,7 @@
 package com.framework.apiworld.entity.examples;
 
+import java.util.Objects;
+
 /**
  * Example
  */
@@ -93,7 +95,7 @@ public class Example {
     }
 
     public void set$ref(String $ref) {
-        if ($ref != null && ($ref.indexOf(".") == -1 && $ref.indexOf("/") == -1)) {
+        if ($ref != null && (!$ref.contains(".") && !$ref.contains("/"))) {
             $ref = "#/components/examples/" + $ref;
         }
         this.$ref = $ref;
@@ -138,22 +140,22 @@ public class Example {
 
         Example example = (Example) o;
 
-        if (summary != null ? !summary.equals(example.summary) : example.summary != null) {
+        if (!Objects.equals(summary, example.summary)) {
             return false;
         }
-        if (description != null ? !description.equals(example.description) : example.description != null) {
+        if (!Objects.equals(description, example.description)) {
             return false;
         }
-        if (value != null ? !value.equals(example.value) : example.value != null) {
+        if (!Objects.equals(value, example.value)) {
             return false;
         }
-        if (externalValue != null ? !externalValue.equals(example.externalValue) : example.externalValue != null) {
+        if (!Objects.equals(externalValue, example.externalValue)) {
             return false;
         }
-        if ($ref != null ? !$ref.equals(example.$ref) : example.$ref != null) {
+        if (!Objects.equals($ref, example.$ref)) {
             return false;
         }
-        return extensions != null ? extensions.equals(example.extensions) : example.extensions == null;
+        return Objects.equals(extensions, example.extensions);
 
     }
 

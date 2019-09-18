@@ -30,7 +30,7 @@ public class Callback extends LinkedHashMap<String, PathItem> {
      * @since 2.0.3
      */
     public void set$ref(String $ref) {
-        if ($ref != null && ($ref.indexOf(".") == -1 && $ref.indexOf("/") == -1)) {
+        if ($ref != null && (!$ref.contains(".") && !$ref.contains("/"))) {
             $ref = "#/components/callbacks/" + $ref;
         }
         this.$ref = $ref;
@@ -58,7 +58,7 @@ public class Callback extends LinkedHashMap<String, PathItem> {
             return false;
         }
         Callback callback = (Callback) o;
-        if ($ref != null ? !$ref.equals(callback.$ref) : callback.$ref != null) {
+        if (!Objects.equals($ref, callback.$ref)) {
             return false;
         }
         return Objects.equals(this.extensions, callback.extensions) &&

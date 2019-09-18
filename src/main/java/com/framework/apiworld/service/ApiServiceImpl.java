@@ -1,7 +1,9 @@
-package com.framework.apiworld;
+package com.framework.apiworld.service;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.framework.apiworld.mongo.ApiRepositoryService;
+import com.framework.apiworld.beans.CreateApiRequest;
 import com.framework.apiworld.dtos.OpenApiDTO;
 import com.framework.apiworld.entity.OpenAPI;
 import io.swagger.v3.parser.OpenAPIV3Parser;
@@ -19,8 +21,8 @@ public class ApiServiceImpl implements ApiService {
     public ApiServiceImpl() {}
 
     @Override
-    public OpenApiDTO createApi(CreatApiRequest creatApiRequest) {
-        String schemaUri = creatApiRequest.getSchemaUri();
+    public OpenApiDTO createApi(CreateApiRequest createApiRequest) {
+        String schemaUri = createApiRequest.getSchemaUri();
         io.swagger.v3.oas.models.OpenAPI swaggerOpenAPI = new OpenAPIV3Parser().read(schemaUri);
         ObjectMapper objectMapper = new ObjectMapper();
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);

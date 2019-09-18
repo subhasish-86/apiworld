@@ -1,6 +1,7 @@
 package com.framework.apiworld.dtos;
 
 import com.framework.apiworld.entity.parameters.Parameter;
+import com.framework.apiworld.enums.StyleEnum;
 
 public class ParameterDTO extends EntityDTOBase {
     private String name = null;

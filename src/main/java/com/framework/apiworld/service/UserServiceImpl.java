@@ -1,4 +1,4 @@
-package com.framework.apiworld;
+package com.framework.apiworld.service;
 
 import com.framework.apiworld.beans.User;
 import org.springframework.stereotype.Service;

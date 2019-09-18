@@ -1,7 +1,7 @@
 package com.framework.apiworld.dtos;
 
 import com.framework.apiworld.entity.Operation;
-import com.framework.apiworld.entity.responses.ApiResponses;
+import com.framework.apiworld.enums.HttpMethodEnum;
 
 import java.util.ArrayList;
 import java.util.List;
