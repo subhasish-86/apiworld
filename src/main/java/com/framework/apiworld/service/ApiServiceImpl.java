@@ -11,6 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+import java.util.UUID;
+
 @Service
 @Component
 public class ApiServiceImpl implements ApiService {
@@ -34,29 +37,29 @@ public class ApiServiceImpl implements ApiService {
 
     }
 
-//    @Override
-//    public List<com.framework.apiworld.entity.OpenAPI> getApi() {
-//        return null;
-//    }
-//
-//    @Override
-//    public com.framework.apiworld.entity.OpenAPI findById(UUID id) {
-//        return null;
-//    }
-//
-//    @Override
-//    public void update(com.framework.apiworld.entity.OpenAPI api) {
-//
-//    }
-//
-//    @Override
-//    public void deleteApiById(int id) {
-//
-//    }
-//
-//    @Override
-//    public void updatePartially(com.framework.apiworld.entity.OpenAPI api, UUID id) {
-//
-//    }
+    @Override
+    public List<OpenAPI> getAllApis() {
+        return null;
+    }
+
+    @Override
+    public OpenAPI findById(UUID id) {
+        return null;
+    }
+
+    @Override
+    public void update(OpenAPI api) {
+
+    }
+
+    @Override
+    public void deleteApiById(UUID id) {
+
+    }
+
+    @Override
+    public void updatePartially(OpenAPI api, UUID id) {
+
+    }
 }
 

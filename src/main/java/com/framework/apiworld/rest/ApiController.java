@@ -1,16 +1,18 @@
 package com.framework.apiworld.rest;
 
+import com.framework.apiworld.entity.OpenAPI;
 import com.framework.apiworld.service.ApiService;
 import com.framework.apiworld.beans.CreateApiRequest;
 import com.framework.apiworld.dtos.OpenApiDTO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
+import java.util.List;
+import java.util.UUID;
 
 
 @RestController
@@ -21,9 +23,9 @@ public class ApiController {
     private ApiService apiService;
 
 
-    @GetMapping(value = "/", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<String> getApiById() {
-                return new ResponseEntity<>("Hello World", HttpStatus.OK);
+    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public OpenAPI getApiById(@PathVariable("id") UUID uuid) {
+        return apiService.findById(uuid);
 
     }
 
@@ -32,10 +34,9 @@ public class ApiController {
         return ResponseEntity.ok(apiService.createApi(createApiRequest));
     }
 
-//    @GetMapping(value="/", headers="Accept=application/json")
-//    public List<OpenAPI> getAllApis() {
-//        List<OpenAPI> tasks=apiService.getAllApis();
-//        return tasks;
-//
-//    }
+    @GetMapping(value="/", headers="Accept=application/json")
+    public List<OpenAPI> getAllApis() {
+        return apiService.getAllApis();
+
+    }
 }
