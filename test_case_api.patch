@@ -1,0 +1,380 @@
+Index: src/main/java/com/framework/apiworld/rest/ApiController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/framework/apiworld/rest/ApiController.java	(revision 24e77f90f4c9b6c163871bd31c45ad779cb120c0)
++++ src/main/java/com/framework/apiworld/rest/ApiController.java	(date 1568871920452)
+@@ -16,7 +16,7 @@
+ 
+ 
+ @RestController
+-@RequestMapping(value={"/api"})
++@RequestMapping(value="/api")
+ public class ApiController {
+ 
+     @Autowired
+Index: src/main/java/com/framework/apiworld/service/TestCaseServiceImpl.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/framework/apiworld/service/TestCaseServiceImpl.java	(date 1568880745993)
++++ src/main/java/com/framework/apiworld/service/TestCaseServiceImpl.java	(date 1568880745993)
+@@ -0,0 +1,57 @@
++package com.framework.apiworld.service;
++
++import com.fasterxml.jackson.databind.ObjectMapper;
++import com.fasterxml.jackson.databind.SerializationFeature;
++import com.framework.apiworld.entity.TestCase;
++import com.framework.apiworld.mongo.TestCaseObjectDocument;
++import com.framework.apiworld.mongo.TestCaseRepositoryService;
++import org.springframework.beans.factory.annotation.Autowired;
++import org.springframework.stereotype.Service;
++
++import java.io.IOException;
++
++@Service
++public class TestCaseServiceImpl implements TestCaseService{
++
++    @Autowired
++    private TestCaseRepositoryService repositoryService;
++
++    @Override
++    public String createTestCase(TestCase testCase) {
++        ObjectMapper objectMapper = new ObjectMapper();
++        objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
++        String testcaseDocument = "";
++        TestCaseObjectDocument testCaseObjectDocument = new TestCaseObjectDocument();
++        String dbDocument="";
++        TestCase testCase1 = new TestCase();
++        try {
++             testcaseDocument = objectMapper.writeValueAsString(testCase);
++             testCaseObjectDocument = objectMapper.readValue(testcaseDocument, TestCaseObjectDocument.class);
++             testCaseObjectDocument = repositoryService.createTestCase(testCaseObjectDocument);
++             dbDocument = objectMapper.writeValueAsString(testCaseObjectDocument);
++             testCase1 = objectMapper.readValue(dbDocument, TestCase.class);
++        } catch (IOException e) {
++            e.printStackTrace();
++        }
++
++        return testCase1.getId();
++    }
++
++    @Override
++    public TestCase findById(String id) {
++        ObjectMapper objectMapper = new ObjectMapper();
++        objectMapper.configure(SerializationFeature.FAIL_ON_EMPTY_BEANS, false);
++        TestCaseObjectDocument testCaseObjectDocument = new TestCaseObjectDocument();
++        String dbDocument="";
++        TestCase testCase1 = new TestCase();
++        try {
++            testCaseObjectDocument = repositoryService.findById(id);
++            dbDocument = objectMapper.writeValueAsString(testCaseObjectDocument);
++            testCase1 = objectMapper.readValue(dbDocument, TestCase.class);
++        } catch (IOException e) {
++            e.printStackTrace();
++        }
++
++        return testCase1;
++    }
++}
+Index: src/main/java/com/framework/apiworld/service/TestCaseService.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/framework/apiworld/service/TestCaseService.java	(date 1568879968892)
++++ src/main/java/com/framework/apiworld/service/TestCaseService.java	(date 1568879968892)
+@@ -0,0 +1,9 @@
++package com.framework.apiworld.service;
++
++import com.framework.apiworld.entity.TestCase;
++
++public interface TestCaseService {
++
++    String createTestCase(TestCase testCaseRequest);
++    TestCase findById(String id);
++}
+Index: src/main/java/com/framework/apiworld/entity/TestCase.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/framework/apiworld/entity/TestCase.java	(revision 24e77f90f4c9b6c163871bd31c45ad779cb120c0)
++++ src/main/java/com/framework/apiworld/entity/TestCase.java	(date 1568879680666)
+@@ -2,14 +2,33 @@
+ 
+ import com.framework.apiworld.enums.StatusEnum;
+ 
+-import java.util.UUID;
+-
+ public class TestCase {
+ 
+     private OpenAPI openAPI;
+     private StatusEnum statusEnum;
+-    private UUID id;
++    private String id;
++
++    public OpenAPI getOpenAPI() {
++        return openAPI;
++    }
+ 
++    public void setOpenAPI(OpenAPI openAPI) {
++        this.openAPI = openAPI;
++    }
+ 
++    public StatusEnum getStatusEnum() {
++        return statusEnum;
++    }
+ 
++    public void setStatusEnum(StatusEnum statusEnum) {
++        this.statusEnum = statusEnum;
++    }
++
++    public String getId() {
++        return id;
++    }
++
++    public void setId(String id) {
++        this.id = id;
++    }
+ }
+Index: src/main/java/com/framework/apiworld/mongo/TestCaseObjectDocument.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/framework/apiworld/mongo/TestCaseObjectDocument.java	(revision 24e77f90f4c9b6c163871bd31c45ad779cb120c0)
++++ src/main/java/com/framework/apiworld/mongo/TestCaseObjectDocument.java	(date 1568879353878)
+@@ -2,16 +2,38 @@
+ 
+ import com.framework.apiworld.entity.OpenAPI;
+ import com.framework.apiworld.enums.StatusEnum;
++import org.springframework.data.annotation.Id;
+ import org.springframework.data.mongodb.core.mapping.Document;
+ 
+-import java.util.List;
+-
+ @Document(collection = "apiObjectDocument")
+ public class TestCaseObjectDocument {
+ 
+     private OpenAPI openAPI;
+-    private StatusEnum status;
++    private StatusEnum statusEnum;
++    @Id
++    private String id;
++
++    public OpenAPI getOpenAPI() {
++        return openAPI;
++    }
+ 
++    public void setOpenAPI(OpenAPI openAPI) {
++        this.openAPI = openAPI;
++    }
+ 
++    public StatusEnum getStatusEnum() {
++        return statusEnum;
++    }
+ 
++    public void setStatusEnum(StatusEnum statusEnum) {
++        this.statusEnum = statusEnum;
++    }
++
++    public String getId() {
++        return id;
++    }
++
++    public void setId(String id) {
++        this.id = id;
++    }
+ }
+Index: src/main/java/com/framework/apiworld/beans/TestCaseRequest.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/framework/apiworld/beans/TestCaseRequest.java	(date 1568872255305)
++++ src/main/java/com/framework/apiworld/beans/TestCaseRequest.java	(date 1568872255305)
+@@ -0,0 +1,16 @@
++package com.framework.apiworld.beans;
++
++import com.framework.apiworld.entity.TestCase;
++
++public class TestCaseRequest {
++
++    private TestCase testCase;
++
++    public TestCase getTestCase() {
++        return testCase;
++    }
++
++    public void setTestCase(TestCase testCase) {
++        this.testCase = testCase;
++    }
++}
+Index: src/main/java/com/framework/apiworld/mongo/TestCaseRepositoryServiceImpl.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/framework/apiworld/mongo/TestCaseRepositoryServiceImpl.java	(date 1568880699235)
++++ src/main/java/com/framework/apiworld/mongo/TestCaseRepositoryServiceImpl.java	(date 1568880699235)
+@@ -0,0 +1,49 @@
++package com.framework.apiworld.mongo;
++
++
++import org.springframework.beans.factory.annotation.Autowired;
++import org.springframework.stereotype.Component;
++
++import java.util.List;
++import java.util.UUID;
++
++@Component
++public class TestCaseRepositoryServiceImpl implements TestCaseRepositoryService {
++
++    @Autowired
++    private TestCaseRepository testCaseRepository;
++
++    public TestCaseRepositoryServiceImpl() {
++    }
++
++    @Override
++    public TestCaseObjectDocument createTestCase(TestCaseObjectDocument testCase) {
++        testCaseRepository.save(testCase);
++        return testCase;
++    }
++
++    @Override
++    public List<TestCaseObjectDocument> getAllTestCases() {
++        return testCaseRepository.findAll();
++    }
++
++    @Override
++    public TestCaseObjectDocument findById(String id) {
++        return testCaseRepository.findById(id).orElseThrow(() -> new RuntimeException("No test case found for given id"));
++    }
++
++    @Override
++    public void update(TestCaseObjectDocument testCase) {
++
++    }
++
++    @Override
++    public void deleteApiById(UUID id) {
++        testCaseRepository.deleteById(id.toString());
++    }
++
++    @Override
++    public void updatePartially(TestCaseObjectDocument api, UUID id) {
++
++    }
++}
+Index: src/main/java/com/framework/apiworld/rest/TestCaseController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/framework/apiworld/rest/TestCaseController.java	(date 1568879968889)
++++ src/main/java/com/framework/apiworld/rest/TestCaseController.java	(date 1568879968889)
+@@ -0,0 +1,33 @@
++package com.framework.apiworld.rest;
++
++import com.framework.apiworld.beans.TestCaseRequest;
++import com.framework.apiworld.entity.OpenAPI;
++import com.framework.apiworld.entity.TestCase;
++import com.framework.apiworld.service.TestCaseService;
++import org.springframework.beans.factory.annotation.Autowired;
++import org.springframework.http.MediaType;
++import org.springframework.http.ResponseEntity;
++import org.springframework.web.bind.annotation.*;
++
++import javax.validation.Valid;
++import java.util.UUID;
++
++@RestController
++@RequestMapping(value="/testcase")
++public class TestCaseController {
++
++    @Autowired
++    private TestCaseService testCaseService;
++
++
++    @PostMapping
++    public ResponseEntity<String> createApi(@Valid @RequestBody TestCaseRequest testCaseRequest){
++        return ResponseEntity.ok(testCaseService.createTestCase(testCaseRequest.getTestCase()));
++    }
++
++    @GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
++    public TestCase getApiById(@PathVariable("id") String id) {
++        return testCaseService.findById(id);
++
++    }
++}
+Index: src/main/java/com/framework/apiworld/service/ApiServiceImpl.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/framework/apiworld/service/ApiServiceImpl.java	(revision 24e77f90f4c9b6c163871bd31c45ad779cb120c0)
++++ src/main/java/com/framework/apiworld/service/ApiServiceImpl.java	(date 1568873023589)
+@@ -2,20 +2,18 @@
+ 
+ import com.fasterxml.jackson.databind.DeserializationFeature;
+ import com.fasterxml.jackson.databind.ObjectMapper;
+-import com.framework.apiworld.mongo.ApiRepositoryService;
+ import com.framework.apiworld.beans.CreateApiRequest;
+ import com.framework.apiworld.dtos.OpenApiDTO;
+ import com.framework.apiworld.entity.OpenAPI;
++import com.framework.apiworld.mongo.ApiRepositoryService;
+ import io.swagger.v3.parser.OpenAPIV3Parser;
+ import org.springframework.beans.factory.annotation.Autowired;
+-import org.springframework.stereotype.Component;
+ import org.springframework.stereotype.Service;
+ 
+ import java.util.List;
+ import java.util.UUID;
+ 
+ @Service
+-@Component
+ public class ApiServiceImpl implements ApiService {
+ 
+     @Autowired
+Index: src/main/java/com/framework/apiworld/mongo/TestCaseRepositoryService.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/framework/apiworld/mongo/TestCaseRepositoryService.java	(date 1568880699243)
++++ src/main/java/com/framework/apiworld/mongo/TestCaseRepositoryService.java	(date 1568880699243)
+@@ -0,0 +1,14 @@
++package com.framework.apiworld.mongo;
++
++
++import java.util.List;
++import java.util.UUID;
++
++public interface TestCaseRepositoryService {
++    TestCaseObjectDocument createTestCase(TestCaseObjectDocument testCase);
++    List<TestCaseObjectDocument> getAllTestCases();
++    TestCaseObjectDocument findById(String id);
++    void update(TestCaseObjectDocument testCase);
++    void deleteApiById(UUID id);
++    void updatePartially(TestCaseObjectDocument testCase, UUID id);
++}
+Index: src/main/java/com/framework/apiworld/mongo/TestCaseRepository.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- src/main/java/com/framework/apiworld/mongo/TestCaseRepository.java	(date 1568878360512)
++++ src/main/java/com/framework/apiworld/mongo/TestCaseRepository.java	(date 1568878360512)
+@@ -0,0 +1,8 @@
++package com.framework.apiworld.mongo;
++
++import org.springframework.data.mongodb.repository.MongoRepository;
++import org.springframework.data.rest.core.annotation.RepositoryRestResource;
++
++@RepositoryRestResource(collectionResourceRel = "testCase")
++public interface TestCaseRepository extends MongoRepository<TestCaseObjectDocument, String> {
++}

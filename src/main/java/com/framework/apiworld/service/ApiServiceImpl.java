@@ -2,20 +2,18 @@ package com.framework.apiworld.service;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.framework.apiworld.mongo.ApiRepositoryService;
 import com.framework.apiworld.beans.CreateApiRequest;
 import com.framework.apiworld.dtos.OpenApiDTO;
 import com.framework.apiworld.entity.OpenAPI;
+import com.framework.apiworld.mongo.ApiRepositoryService;
 import io.swagger.v3.parser.OpenAPIV3Parser;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.UUID;
 
 @Service
-@Component
 public class ApiServiceImpl implements ApiService {
 
     @Autowired
